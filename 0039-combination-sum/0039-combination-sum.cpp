@@ -26,3 +26,11 @@ public:
         return ans;
     }
 };
+
+/*
+
+Whenever the problem is printing combinations or subsequence --> first thought must be Recursion 
+
+whenever the problem id picking of elements from a array to form a combination , we start thinnking about pick / not_pick thought process 
+
+*/
