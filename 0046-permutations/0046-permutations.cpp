@@ -1,40 +1,49 @@
 class Solution {
 public:
-    void permutation(vector<vector<int>>& ans, vector<int>& ds,
-                     vector<int>& arr, vector<int>& mp) {
-        if (ds.size() == arr.size()) {
-            ans.push_back(ds);
-            return;
+    void permutationOP(int idx, vector<vector<int>>& ans, vector<int>& arr) {
+        if (idx == arr.size()) {
+            ans.push_back(arr);
         }
 
-        for (int i = 0; i < arr.size(); i++) {
-            if (!mp[i]) {
-                ds.push_back(arr[i]);
-                mp[i] = 1;
-                permutation(ans, ds, arr, mp);
-                ds.pop_back();
-                mp[i] = 0;
-            }
+        for (int i = idx; i < arr.size(); i++) {
+            swap(arr[i], arr[idx]);
+            permutationOP(idx + 1, ans, arr);
+            swap(arr[i], arr[idx]);
         }
     }
 
 public:
-    vector<vector<int>> permute(vector<int>& nums) {
+    vector<vector<int>> permute(vector<int>& v) {
         vector<vector<int>> ans;
-        vector<int> ds;
-        vector<int> mp(nums.size(), 0);
-        permutation(ans, ds, nums, mp);
+        permutationOP(0, ans, v);
 
         return ans;
     }
 };
 
-/*
 
-generate all arrangements where order matters
-use backtracking + visited array
-at each step, try every unused element
-once an element is used, mark it and don’t reuse in same path
-build solution step by step until size == n
-
-*/
+// BACKTRACKING PATTERN (Permutation Style)
+//
+// 1. Fix one position at a time (idx represents current position)
+// 2. Try all possible choices for that position (loop from idx → n-1)
+// 3. Swap to make the choice
+// 4. Recurse for next position (idx + 1)
+// 5. Backtrack (undo swap)
+//
+// RULE:
+// → Recursion always moves using (idx + 1), NOT loop variable (i + 1)
+//
+// TEMPLATE:
+//
+// void solve(int idx, vector<int>& arr) {
+//     if (idx == arr.size()) {
+//         // store answer
+//         return;
+//     }
+//
+//     for (int i = idx; i < arr.size(); i++) {
+//         swap(arr[i], arr[idx]);   // choose
+//         solve(idx + 1, arr);      // explore
+//         swap(arr[i], arr[idx]);   // un-choose (backtrack)
+//     }
+// }
